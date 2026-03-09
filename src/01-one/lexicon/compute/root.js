@@ -18,6 +18,25 @@ const stripReflexive = function (str) {
   return str
 }
 
+// remove basic Irish initial mutations (séimhiú/urú)
+const stripMutation = function (str) {
+  // 1. urú: MUST come first to protect 'bhf'
+  // Using capture groups (e.g., (b)) and $1 preserves the original casing of the root consonant.
+  str = str.replace(/^m(b)/i, '$1')
+  str = str.replace(/^g(c)/i, '$1')
+  str = str.replace(/^n(d)/i, '$1')
+  str = str.replace(/^bh(f)/i, '$1')
+  str = str.replace(/^n(g)/i, '$1')
+  str = str.replace(/^b(p)/i, '$1')
+  str = str.replace(/^d(t)/i, '$1')
+
+  // 2. séimhiú: remove h after certain consonants
+  // We capture the initial consonant and replace the two letters with just the captured consonant.
+  str = str.replace(/^(b|c|d|f|g|m|p|s|t)h/i, '$1')
+
+  return str
+}
+
 const root = function (view) {
   const { verb, noun, adjective } = view.world.methods.two.transform
   view.docs.forEach((terms) => {
@@ -49,14 +68,12 @@ const root = function (view) {
         }
       }
 
-      // nouns -> singular masculine form
+      // nouns -> singular dictionary root form
       if (term.tags.has('Noun')) {
+        // strip initial mutation to recover lemma
+        str = stripMutation(str)
         if (term.tags.has('Plural')) {
           str = noun.toSingular(str)
-        }
-        if (term.tags.has('FemaleNoun')) {
-          // not sure about this
-          // str = noun.toMasculine(str)
         }
         term.root = str
       }
