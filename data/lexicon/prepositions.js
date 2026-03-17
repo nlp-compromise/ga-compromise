@@ -1,5 +1,25 @@
-// https://lingvist.com/course/learn-spanish-online/resources/spanish-prepositions/
+// https://en.wikipedia.org/wiki/Irish_prepositions
 export default [
-
-
+  'ag',
+  'ar',
+  'as',
+  'chuig',
+  'dar',
+  'de',
+  'do',
+  'faoi',
+  'gan',
+  'go',
+  'i',
+  'idir',
+  'in',
+  'le',
+  'mar',
+  'ó',
+  'roimh',
+  'seachas',
+  'thar',
+  'trí',
+  'um',
+  'go dtí'
 ]
